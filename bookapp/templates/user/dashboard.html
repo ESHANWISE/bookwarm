@@ -1,0 +1,12 @@
+
+{% extends "user/home_layout.html" %}
+
+ 
+{% block content%}  
+<div class="content" style="background-color: white;padding:3em">
+  <h3>Welcome {{userdeets.user_fullname}}</h3>
+  <p>This is your dashboard, please use the second-level menu to carry out tasks</p>
+ </div>
+ {% block partner%}{%endblock%}
+ {% block featured%}{%endblock%}
+{% endblock %}

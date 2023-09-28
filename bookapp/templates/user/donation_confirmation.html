@@ -1,0 +1,69 @@
+
+{% extends "user/home_layout.html" %}
+
+ 
+{% block content%}  
+<div class="content" style="background-color: white;padding:3em">
+  <h3>Confirmation Page</h3>
+  <p>Kindly confirm the following details</p>
+  <div class="mb-3">
+    <label for="">Donor's Name: </label>
+    {{donation_deets.don_fullname}}
+  </div>
+  <div class="mb-3">
+    <label for="">Donor's Email: </label>
+    {{donation_deets.don_email}}
+  </div>
+  <div class="mb-3">
+    <label for="">Donor's Amount: </label>
+    {{donation_deets.don_amt/100}}
+  </div>
+  <div class="mb-3">
+    <label for="">TANSACTION REF: </label>
+    <b><span class="text-danger">{{donation_deets.don_refno}}</span></b>
+  </div>
+  <form action="" id="paymentForm">
+
+    <div class="mb-3">
+        <a href="/dashboard" class="btn btn-warning">Cancel Payment</a>
+       <button class="btn btn-danger noround"  onclick="payWithPaystack()">Confirm Payment (popup)</button>
+    </div>
+  </form>
+ </div>
+
+ <!-- redirect method -->
+ <hr>
+
+ <h5>Redirect method</h5>
+ <a href="/initialize/paystack" class="btn btn-success noround">Make Payment Now</a>
+{% endblock %}
+
+{% block customjs%}
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+    const paymentForm = document.getElementById('paymentForm');
+    paymentForm.addEventListener("submit", payWithPaystack, false);
+
+    function payWithPaystack(e) {
+    e.preventDefault();
+
+    let handler = PaystackPop.setup({
+        key: 'pk_test_41a6e6e159ab5e8bc89ec080c978d07fbdfcf0fe', // Replace with your public key
+        email: "{{donation_deets.don_email}}",
+        amount: "{{donation_deets.don_amt}}",
+        ref: "{{donation_deets.don_refno}}", // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+        // label: "Optional string that replaces customer email"
+        onClose: function(){
+        alert('Window closed.');
+        },
+        callback: function(response){
+        let message = 'Payment complete! Reference: ' + response.reference;
+        // make ajax call call to update your db here
+        alert(message);
+        }
+    });
+
+    handler.openIframe();
+}
+</script>
+{%endblock%}

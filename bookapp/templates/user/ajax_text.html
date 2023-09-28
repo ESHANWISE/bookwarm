@@ -1,0 +1,62 @@
+{% extends "user/home_layout.html"%}
+
+{% block content %}
+<div class="content" style="background-color: white;padding: 3em;">
+    <input type="text" name="" id="fullname" class="form-control border-success noround">
+    <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}" >
+    <button class="btn btn-danger noround">click ME</button>
+    <button id="btn" class="btn btn-danger noround">Submit</button>
+    <div class="mb-3 border-primary" id="feedback">{{data}}</div>
+    <div class="mb-3 border-primary" id="ajaxfeedback"></div>
+</div>
+<div class="row">
+    <div class="col">
+        <input type="text" id="email" class="form-control noround border-success">
+        <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}" >
+    </div>
+    <div class="col">
+        <button class="btn btn-primary" id="chk">Check availabilty</button>
+    </div>
+    <div class="col" id="avail">
+        
+    </div>
+</div>
+
+{%endblock%}
+
+{% block customjs %}
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $('#chk').click(function(){
+            var email = $('#email').val()
+            var csrf = $('#csrf_token').val()
+            var data = {"email": email,"csrf": csrf} 
+            $('#avail').load('/checkavailability/',data)
+                // $(this).addClass('alert alert-warning')})
+            
+        })
+
+
+
+        $("button").click(function(){
+            $('#ajaxfeedback').load('/submission/')
+        })
+        
+        $('#btn').click(function(){
+            // data2send = 'fullname='+ fname this is a string method request 
+            
+            fname = $("#fullname").val()
+            csrf = $('#csrf_token').val()
+            data2send = {"fullname":fname,"csrf": csrf}
+            $('#ajaxfeedback').load('/submission/',data2send,function(){
+                $(this).addClass('alert alert-warning')
+            })
+        })
+        $("button").click(function(){
+            g = $('#fullname').val()
+           alert(g)
+        })
+    })
+</script>
+{%endblock%}

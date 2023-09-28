@@ -1,0 +1,33 @@
+{% extends "user/home_layout.html"%}
+
+{% block content %}
+
+
+
+    
+<div class="content" style="background-color: white;padding:3em">
+  <h3>Change your profile Picture</h3>
+  <form action="" enctype="multipart/form-data" method="post">
+        {{pform.csrf_token}}
+    {% if pform.fullname.errors %}
+    <div class="alert alert-danger">
+        {{pform.p.errors}} 
+    </div>
+    {%endif%}
+        <div class="mb-3">
+            {{pform.fullname.label}}
+            {{pform.fullname(class_='form-control border-success noround', value=userdeets.user_fullname)}}
+        </div>
+        <div class="mb-3">
+            {{pform.btnupload(class_='btn btn-danger noround')}}
+        </div>
+  </form>
+ </div>
+
+  </div>
+
+ {% block partner %}
+ {%endblock%}
+ {% block featured%}{%endblock%}
+
+{%endblock%}
